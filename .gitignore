@@ -1,0 +1,4 @@
+node_modules/
+editorextensions/better-layouts/node_modules
+editorextensions/better-layouts/bin
+.idea/
