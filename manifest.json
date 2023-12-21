@@ -4,7 +4,7 @@
   "extensions": [
     {
       "name": "better-layouts",
-      "title": "better-layouts",
+      "title": "Better Layouts",
       "products": [
         "chart",
         "spark",
