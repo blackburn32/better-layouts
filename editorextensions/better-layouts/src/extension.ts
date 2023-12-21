@@ -1,6 +1,7 @@
 import {EditorClient, Menu, MenuType, Viewport} from 'lucid-extension-sdk';
 import {LayoutOption} from './utils';
 import {CircleLayout} from './layouts/circle';
+import {SpiralLayout} from './layouts/spiral';
 
 const client: EditorClient = new EditorClient();
 const menu: Menu = new Menu(client);
@@ -12,6 +13,7 @@ client.registerAction('multipleItemsSelected', multipleItemsSelected);
 
 const layouts: LayoutOption[] = [
     CircleLayout,
+    SpiralLayout,
 ];
 
 layouts.forEach((layout: LayoutOption) => {
