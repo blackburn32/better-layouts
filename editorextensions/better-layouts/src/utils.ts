@@ -1,4 +1,4 @@
-import {ItemProxy, Viewport} from 'lucid-extension-sdk';
+import {ItemProxy, Point, Viewport} from 'lucid-extension-sdk';
 
 export type LayoutOption = {
     label: string;
@@ -34,3 +34,24 @@ export const getCenterOfViewport = (viewport: Viewport) => {
     };
 }
 
+export const getCoordinatesOnLine = (startPoint: Point, endPoint: Point, numPoints: number) => {
+    const points = [];
+    for (let i = 0; i < numPoints; i++) {
+        points.push({
+            x: startPoint.x + i * (endPoint.x - startPoint.x) / numPoints,
+            y: startPoint.y + i * (endPoint.y - startPoint.y) / numPoints,
+        });
+    }
+    return points;
+}
+
+export const distributeItemsToPoints = (items: ItemProxy[], points: Point[]) => {
+    items.forEach((item, index) => {
+        if (index < points.length) {
+            const box = item.getBoundingBox();
+            box.x = points[index].x - box.w / 2;
+            box.y = points[index].y - box.h / 2;
+            item.setBoundingBox(box);
+        }
+    });
+}
