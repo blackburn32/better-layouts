@@ -1,5 +1,9 @@
-node_modules/
-editorextensions/better-layouts/node_modules
 editorextensions/better-layouts/bin
+editorextensions/better-layouts/controlpanel/.vscode
+editorextensions/better-layouts/node_modules
+
+node_modules/
+public/
 .idea/
+
 *.zip

@@ -1,26 +1,30 @@
 import {EditorClient, Menu, MenuType, Viewport} from 'lucid-extension-sdk';
-import {LayoutOption} from './utils';
-import {CircleLayout} from './layouts/circle';
-import {SpiralLayout} from './layouts/spiral';
-import {TriangleLayout} from './layouts/triangle';
+import {MenuItemConfiguration} from './utils';
+import {ControlPanel} from './panel/controlpanel';
+import {CircleMenuItemConfiguration} from './layouts/circle/circlemenuitemconfiguration';
+import {TriangleMenuItemConfiguration} from './layouts/triangle/trianglemenuitemconfiguration';
+import {SpiralMenuItemConfiguration} from './layouts/spiral/spiralmenuitemconfiguration';
 
 const client: EditorClient = new EditorClient();
 const menu: Menu = new Menu(client);
 const viewport: Viewport = new Viewport(client);
+const controlPanel = new ControlPanel(client, viewport);
+controlPanel.show();
+
 const multipleItemsSelected = () => {
     return viewport.getSelectedItems().length > 1;
 }
 client.registerAction('multipleItemsSelected', multipleItemsSelected);
 
-const layouts: LayoutOption[] = [
-    CircleLayout,
-    SpiralLayout,
-    TriangleLayout,
+const layouts: MenuItemConfiguration[] = [
+    CircleMenuItemConfiguration,
+    TriangleMenuItemConfiguration,
+    SpiralMenuItemConfiguration,
 ];
 
-layouts.forEach((layout: LayoutOption) => {
+layouts.forEach((layout: MenuItemConfiguration) => {
     const layoutActionName = `layoutSelectedItemsIn${layout.label}`;
-    client.registerAction(layoutActionName, layout.action);
+    client.registerAction(layoutActionName, () => layout.action(viewport));
     menu.addMenuItem({
         label: layout.label,
         action: layoutActionName,

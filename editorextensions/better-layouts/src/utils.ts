@@ -1,9 +1,15 @@
-import {ItemProxy, Point, Viewport} from 'lucid-extension-sdk';
+import {isBoolean, isNullish, isNumber, ItemProxy, Point, Viewport} from 'lucid-extension-sdk';
 
-export type LayoutOption = {
+export type MenuItemConfiguration = {
     label: string;
-    action: () => void;
+    action: (viewport: Viewport) => void;
     visibleAction: string;
+}
+
+export type SliderConfiguration = {
+    min: number;
+    max: number;
+    step: number;
 }
 
 export const getAverageBoundingBox = (items: ItemProxy[]) => {
@@ -38,8 +44,8 @@ export const getCoordinatesOnLine = (startPoint: Point, endPoint: Point, numPoin
     const points = [];
     for (let i = 0; i < numPoints; i++) {
         points.push({
-            x: startPoint.x + i * (endPoint.x - startPoint.x) / numPoints,
-            y: startPoint.y + i * (endPoint.y - startPoint.y) / numPoints,
+            x: startPoint.x + i * ((endPoint.x - startPoint.x) / numPoints),
+            y: startPoint.y + i * ((endPoint.y - startPoint.y) / numPoints),
         });
     }
     return points;
@@ -54,4 +60,36 @@ export const distributeItemsToPoints = (items: ItemProxy[], points: Point[]) => 
             item.setBoundingBox(box);
         }
     });
+}
+
+export type CircleLayoutOptions = {
+    radius?: number;
+    type: 'circle'
+}
+
+export function isCircleLayoutOptions(options: any): options is CircleLayoutOptions {
+    return options.type === 'circle' && (isNumber(options.radius) || isNullish(options.radius));
+}
+
+export type TriangleLayoutOptions = {
+    type: 'triangle'
+    sideLength?: number;
+}
+
+export function isTriangleLayoutOptions(options: any): options is TriangleLayoutOptions {
+    return options.type === 'triangle' && (isNumber(options.sideLength) || isNullish(options.sideLength));
+}
+
+export type SpiralLayoutOptions = {
+    type: 'spiral'
+    spacing?: number;
+    radius?: number;
+    clockwise?: boolean;
+}
+
+export function isSpiralLayoutOptions(options: any): options is SpiralLayoutOptions {
+    return options.type === 'spiral'
+           && (isNumber(options.spacing) || isNullish(options.spacing))
+           && (isNumber(options.radius) || isNullish(options.radius))
+           && (isBoolean(options.clockwise)|| isNullish(options.clockwise));
 }
